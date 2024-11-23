@@ -33,7 +33,7 @@
                                 @method('PUT')
                                 <input type="hidden" name="action" value="unborrow">
                                 <input type="hidden" name="unborrow_books[]" value="{{ $book->id }}">
-                                <button type="submit" class="btn btn-danger btn-sm">Unborrow</button>
+                                <button type="submit" class="btn btn-danger btn-sm">Return</button>
                             </form>
                         </li>
                     @endforeach
