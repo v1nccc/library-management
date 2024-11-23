@@ -25,15 +25,28 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        //
+        $books = Book::all();
+        return view('customerdetails', compact('books'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCustomerRequest $request)
+    public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'borrow_books' => 'nullable|array',
+            'borrow_books.*' => 'exists:books,id',
+        ]);
+
+        $customer = Customer::create(['name' => $validated['name']]);
+
+        if (!empty($validated['borrow_books'])) {
+            Book::whereIn('id', $validated['borrow_books'])->update(['customer_id' => $customer->id]);
+        }
+
+        return redirect()->route('customers.index')->with('success', 'Customer added successfully!');
     }
 
     /**
